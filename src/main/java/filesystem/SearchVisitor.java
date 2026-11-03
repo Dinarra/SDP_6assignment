@@ -1,8 +1,8 @@
 package filesystem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class SearchVisitor implements Visitor {
 
@@ -19,8 +19,11 @@ public class SearchVisitor implements Visitor {
 
     @Override
     public void visit(FileNode file) {
-        // TODO 1: if the name contains nameFragment AND size >= minSize,
-        // build the path (pathSegments + file name, joined with "/") and add it to matches
+        if (file.getName().contains(nameFragment) && file.getSizeInBytes() >= minSize) {
+            List<String> parts = new ArrayList<>(pathSegments);
+            parts.add(file.getName());
+            matches.add(String.join("/", parts));
+        }
     }
 
     @Override
