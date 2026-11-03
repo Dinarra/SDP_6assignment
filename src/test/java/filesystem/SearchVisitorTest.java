@@ -32,4 +32,20 @@ class SearchVisitorTest {
 
         assertTrue(search.getMatches().isEmpty());
     }
+    @Test
+    void producesSortedRootRelativePaths() {
+        DirectoryNode root = new DirectoryNode("root");
+        DirectoryNode docs = new DirectoryNode("docs");
+        DirectoryNode work = new DirectoryNode("work");
+        root.addChild(docs);
+        docs.addChild(work);
+        work.addChild(new FileNode("c.txt", 1));
+        docs.addChild(new FileNode("b.txt", 1));
+        root.addChild(new FileNode("a.txt", 1));
+
+        SearchVisitor search = new SearchVisitor(".txt", 0);
+        root.accept(search);
+
+        assertEquals(List.of("a.txt", "docs/b.txt", "docs/work/c.txt"), search.getMatches());
+    }
 }
